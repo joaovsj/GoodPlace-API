@@ -16,14 +16,14 @@ return new class extends Migration
             $table->string('name');
             $table->char('cep', 8); 
             $table->string('address', 255);
-            $table->integer('number', 10);
+            $table->string('number', 10);
             $table->string('neighborhood', 50);
             $table->string('city', 50);
             $table->char('state', 2);
             $table->string('country', 50);
             $table->unsignedBigInteger('category_id');
 
-            $tabçe->foreign('category_id')
+            $table->foreign('category_id')
                 ->references('id')
                 ->on('category')
                 ->onDelete('cascade');

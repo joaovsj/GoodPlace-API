@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->integer('assessment', 5); // availiação(numero vai representar a quantidade de estrelas)
+            $table->string('assessment', 5); // availiação(numero vai representar a quantidade de estrelas)
             $table->text("description");
             $table->json("details");          // cada indice vai representar um icone(categoria(conforto/atendimento)) e o valor a qualidade delas
             $table->unsignedBigInteger("user_id");
@@ -21,11 +21,13 @@ return new class extends Migration
             
             $table->foreign("user_id")
                 ->references('id')
-                ->on('users');
+                ->on('users')
+                ->onDelete('cascade');
 
             $table->foreign("place_id")
                 ->references('id')
-                ->on('places');
+                ->on('places')
+                ->onDelete('cascade');
 
             $table->timestamps();
         });
