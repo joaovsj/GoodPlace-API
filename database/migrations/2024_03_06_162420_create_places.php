@@ -21,14 +21,15 @@ return new class extends Migration
             $table->string('city', 50);
             $table->char('state', 2);
             $table->string('country', 50);
-            
             $table->unsignedBigInteger('category_id');
-            $table->timestamps();
-            
+
             $tabçe->foreign('category_id')
                 ->references('id')
                 ->on('category')
                 ->onDelete('cascade');
+
+            $table->timestamps();
+            
         });
     }
 
