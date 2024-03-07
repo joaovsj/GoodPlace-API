@@ -22,12 +22,18 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
+Route::group(['middleware' => ['auth:sanctum']], function(){
+    Route::post('/categories', [CategoryController::class, 'store']);    
+});
+
+
 Route::get('/', function(){
     return response()->json(['status'=> true]);
 });
 
 
-Route::post('/categories', [CategoryController::class, 'store']);
+
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login',    [AuthController::class, 'login']);
