@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use \App\Models\Category;
 
 class CategoryController extends Controller
 {
@@ -27,7 +28,18 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if(Category::create($request->all())){
+            
+            return response()->json([
+                'status' => true,
+                'message' => 'Categoria cadastrada como Sucesso!'
+            ]);
+        }
+
+        return response()->json([
+            'status'=> false,
+            'message' => 'Erro ao cadastrar categoria!'
+        ]);
     }
 
     /**
