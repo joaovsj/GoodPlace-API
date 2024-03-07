@@ -4,15 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+
 use \App\Http\Requests\StoreUserRequest;
+use \App\Http\Requests\LoginRequest;
 
 use \App\Models\User;
 
 class AuthController extends Controller
 {
     public function register(StoreUserRequest $request){
-
-        // die(var_dump($request->all()));
 
         $fields = $request->validated();
 
@@ -32,18 +33,27 @@ class AuthController extends Controller
     }   
 
 
-    public function login(Request $request){
+    public function login(LoginRequest $request){
 
-        $data = $request->all(); 
+        $credentials = $request->validated();
+        $user = User::where('email', $credentials['email'])->first();
 
+        if($user){
+            if(Hash::check($credentials['password'], $user->password)){
+                
+                return response()->json([
+                    'status' => true,
+                    'body'   => $user,
+                    'token'  => $user->createToken('userLogged')->plainTextToken
+                ]);
+            }
+        }
 
-        die($data);
-    }
-
-    public function teste(){
         return response()->json([
-            'status' => true
+            'status' => false,
+            'message'  => "Usuário ou senha inválidos!"
         ]);
     }
 
+    
 }

@@ -33,13 +33,13 @@ class StoreUserRequest extends FormRequest
 
     public function messages(){
         return [
-            'name.required' => 'O campo nome é obrigatório!',
-            'name.string'   => 'O campo nome precisa ser apenas em formato texto!',
-            'email.required' => 'O campo email é obrigatório!',
-            'email.email'   => 'O formato de email é inválido!',
-            'email.unique'  => 'Esse email já está cadastrado!',
-            'password.required'      => 'O campo senha é obrigatório!',
-            'password.confirmed' => 'As senhas não conferem!'
+            'name.required'         => 'O campo nome é obrigatório!',
+            'name.string'           => 'O campo nome precisa ser apenas em formato texto!',
+            'email.required'        => 'O e-mail é obrigatório!',
+            'email.email'           => 'O e-mail é inválido!',
+            'email.unique'          => 'Esse email já está cadastrado!',
+            'password.required'     => 'O campo senha é obrigatório!',
+            'password.confirmed'    => 'As senhas não conferem!'
         ];
     } 
 }
