@@ -7,6 +7,7 @@ use \App\Http\Controllers\AuthController;
 use \App\Http\Controllers\CategoryController;
 use \App\Http\Controllers\PlaceController;
 use \App\Http\Controllers\PostController;
+use \App\Http\Controllers\CommentController;
 
 
 /*
@@ -30,7 +31,8 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::apiResources([
         'categories' => CategoryController::class,
         'places'     => PlaceController::class,
-        'posts'      => PostController::class
+        'posts'      => PostController::class,
+        'comments'   => CommentController::class
     ]);    
 });
 
