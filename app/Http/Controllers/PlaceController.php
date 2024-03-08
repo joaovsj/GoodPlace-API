@@ -35,13 +35,13 @@ class PlaceController extends Controller
             
             return response()->json([
                 'status' => true,
-                'message' => 'Categoria cadastrada como Sucesso!'
+                'message' => 'Lugar cadastrado como Sucesso!'
             ]);
         }
 
         return response()->json([
             'status'=> false,
-            'message' => 'Erro ao cadastrar categoria!'
+            'message' => 'Erro ao cadastrar lugar!'
         ]);
         
     }
@@ -66,7 +66,7 @@ class PlaceController extends Controller
 
         return response()->json([
             'status' => false,
-            'message' => 'Categoria não encontrada!'
+            'message' => 'Lugar não encontrado!'
         ], 404);
 
     }
@@ -91,7 +91,7 @@ class PlaceController extends Controller
             $result = $place->update($request->all());
             return response()->json([
                 'status' => true,
-                'message' => 'Categoria atualizada com sucesso!'
+                'message' => 'Lugar atualizado com sucesso!'
             ], 200);
             
             
@@ -99,7 +99,7 @@ class PlaceController extends Controller
 
         return response()->json([
             'status' => false,
-            'message' => 'Categoria não encontrada!'
+            'message' => 'Lugar não encontrado!'
         ], 404);
     }
 
@@ -112,13 +112,13 @@ class PlaceController extends Controller
             
             return response()->json([
                 'status' => true,
-                'messsage' => 'Categoria deletada com sucesso!'
+                'messsage' => 'Lugar deletado com sucesso!'
             ], 201);
         }
 
         return response()->json([
             'status' => false,
-            'message' => 'Categoria não encontrada!'
+            'message' => 'Lugar não encontrado!'
         ], 404);
     }
 }

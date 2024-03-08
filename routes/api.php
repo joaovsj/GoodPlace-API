@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\AuthController;
 use \App\Http\Controllers\CategoryController;
 use \App\Http\Controllers\PlaceController;
+use \App\Http\Controllers\PostController;
 
 
 /*
@@ -28,7 +29,8 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     
     Route::apiResources([
         'categories' => CategoryController::class,
-        'places'     => PlaceController::class
+        'places'     => PlaceController::class,
+        'posts'      => PostController::class
     ]);    
 });
 
