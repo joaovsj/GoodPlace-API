@@ -24,7 +24,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::group(['middleware' => ['auth:sanctum']], function(){
-    Route::post('/categories', [CategoryController::class, 'store']);    
+    
+    Route::apiResources([
+        'categories' => CategoryController::class
+    ]);    
 });
 
 

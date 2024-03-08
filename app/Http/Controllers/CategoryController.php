@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use \App\Models\Category;
 
+
 class CategoryController extends Controller
 {
     /**
@@ -12,7 +13,10 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([
+            'status' => true,
+            'body'   => Category::orderByDesc('created_at')->get()
+        ]);
     }
 
     /**
@@ -40,14 +44,32 @@ class CategoryController extends Controller
             'status'=> false,
             'message' => 'Erro ao cadastrar categoria!'
         ]);
+        
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $category)
     {
-        //
+        $categoryData = Category::find($category);
+
+        
+        if(isset($categoryData)){
+
+            return response()->json([
+                'status' => true,
+                'body' => $categoryData, 
+            ], 200);
+            
+            
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => 'Categoria não encontrada!'
+        ], 404);
+
     }
 
     /**
@@ -63,7 +85,23 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $category = Category::find($id);
+
+        if(isset($category)){
+
+            $result = $category->update($request->all());
+            return response()->json([
+                'status' => true,
+                'message' => 'Categoria atualizada com sucesso!'
+            ], 200);
+            
+            
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => 'Categoria não encontrada!'
+        ], 404);
     }
 
     /**
@@ -71,6 +109,17 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        if(Category::destroy($id)){
+            
+            return response()->json([
+                'status' => true,
+                'messsage' => 'Categoria deletada com sucesso!'
+            ], 201);
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => 'Categoria não encontrada!'
+        ], 404);
     }
 }
