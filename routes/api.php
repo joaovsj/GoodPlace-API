@@ -9,6 +9,8 @@ use \App\Http\Controllers\PlaceController;
 use \App\Http\Controllers\PostController;
 use \App\Http\Controllers\CommentController;
 
+use \App\Http\Middleware\Cors;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +28,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::group(['middleware' => ['auth:sanctum']], function(){
+Route::group(['middleware' => ['auth:sanctum', 'cors']], function(){
     
     Route::apiResources([
         'categories' => CategoryController::class,
@@ -37,12 +39,16 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
 });
 
 
-Route::get('/', function(){
-    return response()->json(['status'=> true]);
-});
+// Route::get('/', function(){
+//     return response()->json(['status'=> true]);
+// });
+
+Route::post('/register', [AuthController::class, 'register'])   ->middleware('cors');
+Route::post('/login',    [AuthController::class, 'login'])      ->middleware('cors');
 
 
-
-
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login',    [AuthController::class, 'login']);
+Route::get('/', function () {
+    return response()->json([
+        'message' => 'Welcome!'
+    ],200);
+})->middleware('cors');
