@@ -8,6 +8,7 @@ use \App\Http\Controllers\CategoryController;
 use \App\Http\Controllers\PlaceController;
 use \App\Http\Controllers\PostController;
 use \App\Http\Controllers\CommentController;
+use \App\Http\Controllers\UserController;
 
 use \App\Http\Middleware\Cors;
 
@@ -43,7 +44,7 @@ Route::group(['middleware' => ['auth:sanctum', 'cors']], function(){
 //     return response()->json(['status'=> true]);
 // });
 
-Route::post('/register', [AuthController::class, 'register'])   ->middleware('cors');
+Route::post('/register', [UserController::class, 'store'])   ->middleware('cors');
 Route::post('/login',    [AuthController::class, 'login'])      ->middleware('cors');
 
 

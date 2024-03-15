@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use \App\Http\Requests\StoreUserRequest;
+use \App\Models\User;
 
 class UserController extends Controller
 {
@@ -25,9 +27,23 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        //
+        $fields = $request->validated();
+
+        $user = User::create([
+            'name' => $fields['name'],
+            'email' => $fields['email'],
+            'password' => $fields['password'],
+            'phone' => $fields['phone'],
+            'social_media' => $fields['social_media'],
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'body'   => $user,
+            'token'  => $user->createToken('userLogged')->plainTextToken
+        ]);
     }
 
     /**
