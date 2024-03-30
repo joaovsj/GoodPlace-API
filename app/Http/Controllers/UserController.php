@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
+
 use Illuminate\Http\Request;
 use \App\Http\Requests\StoreUserRequest;
 use \App\Models\User;
@@ -56,9 +58,11 @@ class UserController extends Controller
         
         if(isset($userData)){
 
+            $userData['placesVisited'] = $this->countPlacesVisited($id); 
+
             return response()->json([
                 'status' => true,
-                'body' => $userData, 
+                'body' => $userData,
             ], 200); 
         }
 
@@ -67,6 +71,15 @@ class UserController extends Controller
             'message' => 'Usuário não encontrado!'
         ], 404);
     }
+
+    /**
+     * Select the count of places the user has visited  
+     */ 
+    private function countPlacesVisited($id){
+        $count = DB::table('posts')->where('user_id', $id)->count();
+        return $count;
+    }
+
 
     /**
      * Show the form for editing the specified resource.

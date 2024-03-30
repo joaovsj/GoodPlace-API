@@ -45,7 +45,7 @@ Route::group(['middleware' => ['auth:sanctum', 'cors']], function(){
 // });
 
 Route::post('/register', [UserController::class, 'store'])    ->middleware('cors');
-Route::get('/user/{id}',      [UserController::class, 'show'])     ->middleware('cors');
+Route::get('/user/{id}', [UserController::class, 'show'])     ->middleware('cors');
 
 Route::post('/login',    [AuthController::class, 'login'])    ->middleware('cors');
 
