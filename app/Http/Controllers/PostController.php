@@ -59,9 +59,7 @@ class PostController extends Controller
             return response()->json([
                 'status' => true,
                 'body' => $postData, 
-            ], 200);
-            
-            
+            ], 200); 
         }
 
         return response()->json([

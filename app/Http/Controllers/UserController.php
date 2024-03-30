@@ -43,7 +43,7 @@ class UserController extends Controller
             'status' => true,
             'body'   => $user,
             'token'  => $user->createToken('userLogged')->plainTextToken
-        ]);
+        ], 201);
     }
 
     /**
@@ -51,7 +51,21 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $userData = User::find($id);
+
+        
+        if(isset($userData)){
+
+            return response()->json([
+                'status' => true,
+                'body' => $userData, 
+            ], 200); 
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => 'Usuário não encontrado!'
+        ], 404);
     }
 
     /**
