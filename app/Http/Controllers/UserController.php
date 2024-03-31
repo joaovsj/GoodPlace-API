@@ -99,7 +99,24 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $userData = User::find($id);
+
+        if(isset($userData)){
+
+            $result = $userData->update($request->all());
+
+            return response()->json([
+                'status' => true,
+                'message' => "Usuário atualizado com sucesso!"
+            ], 200);
+            
+            
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => 'Usuário não encontrado!'
+        ], 404);
     }
 
     /**
