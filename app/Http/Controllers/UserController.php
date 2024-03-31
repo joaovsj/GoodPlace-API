@@ -109,4 +109,8 @@ class UserController extends Controller
     {
         //
     }
+
+    public function icons(){
+        return DB::table('icons')->get();
+    }
 }
