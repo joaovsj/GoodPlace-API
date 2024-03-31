@@ -33,6 +33,8 @@ class UserController extends Controller
     {
         $fields = $request->validated();
 
+        // dd($fields);
+
         $user = User::create([
             'name' => $fields['name'],
             'email' => $fields['email'],
@@ -55,10 +57,13 @@ class UserController extends Controller
     {
         $userData = User::find($id);
 
-        
         if(isset($userData)){
 
-            $userData['placesVisited'] = $this->countPlacesVisited($id); 
+            $userData['placesVisited'] = $this->countAllRegistersInTable('posts', $id); 
+            $userData['comments']      = $this->countAllRegistersInTable('comments', $id); 
+
+            // dd($userData);
+            // $userData['created_at'] = $userData
 
             return response()->json([
                 'status' => true,
@@ -73,10 +78,10 @@ class UserController extends Controller
     }
 
     /**
-     * Select the count of places the user has visited  
+     * Return the count of registers on Table based in ID 
      */ 
-    private function countPlacesVisited($id){
-        $count = DB::table('posts')->where('user_id', $id)->count();
+    private function countAllRegistersInTable($name, $id){
+        $count = DB::table($name)->where('user_id', $id)->count();
         return $count;
     }
 

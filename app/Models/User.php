@@ -45,4 +45,7 @@ class User extends Authenticatable
         'password' => 'hashed',
         'social_media' => 'array'
     ];
+
+    // protected $dateFormat = 'U';
+
 }
