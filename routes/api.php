@@ -24,9 +24,9 @@ use \App\Http\Middleware\Cors;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 
 Route::group(['middleware' => ['auth:sanctum', 'cors']], function(){
@@ -46,12 +46,13 @@ Route::group(['middleware' => ['auth:sanctum', 'cors']], function(){
 
 Route::post('/register', [UserController::class, 'store'])    ->middleware('cors');
 Route::get('/user/{id}', [UserController::class, 'show'])     ->middleware('cors');
-Route::patch('/user/{id}', [UserController::class, 'update'])   ->middleware('cors');
+Route::put('/user/{id}', [UserController::class, 'update'])   ->middleware('cors');
 
-Route::get('icons', [UserController::class,'icons'])     ->middleware('cors');
-
+Route::get('icons',     [UserController::class,'icons'])     ->middleware('cors');
+Route::put('/image',   [   UserController::class, 'image'])   ->middleware('cors');   
 
 Route::post('/login',    [AuthController::class, 'login'])    ->middleware('cors');
+
 
 
 Route::get('/', function () {
