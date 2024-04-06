@@ -101,35 +101,9 @@ class UserController extends Controller
     public function update(Request $request, string $id)
     {
 
-        // $userData = User::find($id);
-        // dd($userData);
-        dd($request->all());
-
-
         $userData = User::find($id);
 
         if(isset($userData)){
-
-            // arquivo FILE
-            if($request->hasFile('photo') and $request->file('photo')->isValid()){
-
-
-                dd('Valid');
-
-                $requestImage = $request->image;
-                $extension = $requestImage->extension();
-                // creating a name
-                $imageName = md5($requestImage->getClientOriginalName().strtotime("now")).".".$extension;
-                // moving to folder
-                $requestImage->move(public_path('img/people'), $imageName);
-                // setting new name to request          
-                $request->image = $imageName;
-
-            }
-
-
-
-            dd($request->all());
 
             $result = $userData->update($request->all());
 
@@ -137,7 +111,6 @@ class UserController extends Controller
                 'status' => true,
                 'message' => "Usuário atualizado com sucesso!"
             ], 200);
-            
             
         }
 
