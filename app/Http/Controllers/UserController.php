@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use \App\Http\Requests\StoreUserRequest;
 use \App\Models\User;
+use \App\Models\ImageUser;
 
 class UserController extends Controller
 {
@@ -158,7 +159,38 @@ class UserController extends Controller
         return DB::table('icons')->get();
     }
 
-    public function image(Request $request){
-        dd($request->all());
+    /**
+     * Store the profile image of user
+     */
+    public function upload(Request $request){
+
+        $imageUser = new ImageUser(); 
+        $imageUser->user_id = $request->user_id;
+
+        if($request->hasFile('image') and $request->file('image')->isValid()){
+
+            $requestImage = $request->image;
+            $extension = $requestImage->extension();
+            // making a new name...
+            $imageName = md5($requestImage->getClientOriginalName().strtotime("now")).".".$extension;
+            // moving to folder
+            $requestImage->move(public_path('img/profile'), $imageName);
+            
+            // setting to request index the new name.            
+            $imageUser->name = $imageName;            
+            $imageUser->save();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Imagem atualizada com sucesso!'
+            ], 201);
+        }   
+
+
+        return response()->json([
+            'status' => false,
+            'message' => 'Formato da imagem é inválido!'
+        ], 422);
+   
     }
 }

@@ -44,13 +44,12 @@ Route::group(['middleware' => ['auth:sanctum', 'cors']], function(){
 //     return response()->json(['status'=> true]);
 // });
 
-Route::post('/register', [UserController::class, 'store'])    ->middleware('cors');
-Route::get('/user/{id}', [UserController::class, 'show'])     ->middleware('cors');
-Route::put('/user/{id}', [UserController::class, 'update'])   ->middleware('cors');
+Route::post('/register', [UserController::class,  'store'])    ->middleware('cors');
+Route::get('/user/{id}', [UserController::class,  'show'])     ->middleware('cors');
+Route::put('/user/{id}', [UserController::class,  'update'])   ->middleware('cors');
+Route::post('/user/image',[UserController::class, 'upload'])   ->middleware('cors');
 
-Route::get('icons',     [UserController::class,'icons'])     ->middleware('cors');
-Route::put('/image',   [   UserController::class, 'image'])   ->middleware('cors');   
-
+Route::get('/icons',     [UserController::class,'icons'])     ->middleware('cors');
 Route::post('/login',    [AuthController::class, 'login'])    ->middleware('cors');
 
 
