@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 use Illuminate\Http\Request;
 use \App\Http\Requests\StoreUserRequest;
@@ -58,13 +59,17 @@ class UserController extends Controller
     {
         $userData = User::find($id);
 
+        
         if(isset($userData)){
 
+            $image = $this->getAbsolutePath($userData->image['name']);
+            unset($userData['image']);
+
+            $userData['image']         = $image;
             $userData['placesVisited'] = $this->countAllRegistersInTable('posts', $id); 
             $userData['comments']      = $this->countAllRegistersInTable('comments', $id); 
-
-            // dd($userData);
-            // $userData['created_at'] = $userData
+            
+            // $userData['image']         = $image;
 
             return response()->json([
                 'status' => true,
@@ -78,12 +83,42 @@ class UserController extends Controller
         ], 404);
     }
 
+
+    private function getAbsolutePath($name){
+        return public_path($name);
+    }
+
     /**
      * Return the count of registers on Table based in ID 
      */ 
     private function countAllRegistersInTable($name, $id){
         $count = DB::table($name)->where('user_id', $id)->count();
         return $count;
+    }
+
+
+    public function getImage(string $id){
+        $userData = User::find($id);
+
+        if(isset($userData)){
+            
+            $nameImage = $userData->image->name;    
+            $path = public_path("img/profile/$nameImage");
+
+            if(file_exists($path)){
+                
+                return response()->file($path);
+            }
+
+            return response()->json("It doesn't exists");
+
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => 'Usuário não encontrado!'
+        ], 404);
+        
     }
 
 
@@ -137,8 +172,21 @@ class UserController extends Controller
      */
     public function upload(Request $request){
 
-        $imageUser = new ImageUser(); 
-        $imageUser->user_id = $request->user_id;
+        $id = $request->user_id; // id of the user
+        $images = ImageUser::where('user_id', '=', $id)->get();
+
+        if(sizeof($images) > 0){
+            $path = public_path('img/profile/') . $images[0]->name;  
+            \file_exists($path) ? unlink($path) : null;  
+                
+            $user = ImageUser::find($images[0]->id); // id of the database
+
+        } else{
+            $user = new ImageUser();
+            $user->user_id = $id;
+        }
+
+        
 
         if($request->hasFile('image') and $request->file('image')->isValid()){
 
@@ -150,8 +198,8 @@ class UserController extends Controller
             $requestImage->move(public_path('img/profile'), $imageName);
             
             // setting to request index the new name.            
-            $imageUser->name = $imageName;            
-            $imageUser->save();
+            $user->name = $imageName;            
+            $user->save();
 
             return response()->json([
                 'status' => true,
