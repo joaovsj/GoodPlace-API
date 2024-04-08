@@ -62,10 +62,10 @@ class UserController extends Controller
         
         if(isset($userData)){
 
-            $image = $this->getAbsolutePath($userData->image['name']);
-            unset($userData['image']);
-
-            $userData['image']         = $image;
+            
+            $imageName = $userData->image->name; 
+            
+            $userData['image']         = $imageName;
             $userData['placesVisited'] = $this->countAllRegistersInTable('posts', $id); 
             $userData['comments']      = $this->countAllRegistersInTable('comments', $id); 
             
@@ -97,13 +97,18 @@ class UserController extends Controller
     }
 
 
-    public function getImage(string $id){
-        $userData = User::find($id);
+    public function getImage(string $name){
 
-        if(isset($userData)){
+        $image = ImageUser::where('name', '=', $name)->get();
+
+        // dd($image);
+        
+        if($image->count() > 0){
             
-            $nameImage = $userData->image->name;    
-            $path = public_path("img/profile/$nameImage");
+            // $nameImage = $userData->image->name;    
+
+            $name = $image[0]->name;
+            $path = public_path("img/profile/$name");
 
             if(file_exists($path)){
                 
@@ -116,7 +121,7 @@ class UserController extends Controller
 
         return response()->json([
             'status' => false,
-            'message' => 'Usuário não encontrado!'
+            'message' => 'Imagem não encontrada!'
         ], 404);
         
     }
@@ -171,7 +176,7 @@ class UserController extends Controller
      * Store the profile image of user
      */
     public function upload(Request $request){
-
+        
         $id = $request->user_id; // id of the user
         $images = ImageUser::where('user_id', '=', $id)->get();
 
