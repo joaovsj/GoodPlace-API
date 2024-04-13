@@ -63,8 +63,8 @@ class UserController extends Controller
         if(isset($userData)){
 
             
-            $imageName = $userData->image->name; 
-            
+            $imageName = $userData->image; 
+
             $userData['image']         = $imageName;
             $userData['placesVisited'] = $this->countAllRegistersInTable('posts', $id); 
             $userData['comments']      = $this->countAllRegistersInTable('comments', $id); 
@@ -197,6 +197,15 @@ class UserController extends Controller
 
             $requestImage = $request->image;
             $extension = $requestImage->extension();
+            $extensions = ['jpg', 'png', 'jpeg'];
+
+            if(!in_array($extension, $extensions)){
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Formato da imagem é inválido!'
+                ], 422);
+            }
+
             // making a new name...
             $imageName = md5($requestImage->getClientOriginalName().strtotime("now")).".".$extension;
             // moving to folder
