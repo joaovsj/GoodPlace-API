@@ -31,11 +31,17 @@ class PlaceController extends Controller
      */
     public function store(Request $request)
     {
-        if(Place::create($request->all())){
+
+        // return response()->json([$request->all()]);
+
+        $place = Place::create($request->all());
+
+        if($place){
             
             return response()->json([
                 'status' => true,
-                'message' => 'Lugar cadastrado como Sucesso!'
+                'message' => 'Lugar cadastrado como Sucesso!',
+                'id'    => $place->id
             ]);
         }
 

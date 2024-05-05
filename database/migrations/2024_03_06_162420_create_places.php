@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('places', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->char('cep', 8); 
+            $table->char('cep', 9); 
             $table->string('address', 255);
             $table->string('number', 10);
             $table->string('neighborhood', 50);
