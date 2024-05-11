@@ -134,8 +134,7 @@ class PostController extends Controller
         }
 
         $imagePost = new ImagePost();
-        $imagePost->place_id = $request->place_id;
-        $imagePost->user_id = $request->user_id;
+        $imagePost->post_id = $request->post_id;
 
         if($request->hasFile('image') and $request->file('image')->isValid()){
 

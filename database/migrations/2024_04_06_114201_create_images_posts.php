@@ -14,19 +14,19 @@ return new class extends Migration
         Schema::create('images_posts', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->unsignedBigInteger('place_id');
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('post_id');
+            // $table->unsignedBigInteger('user_id');
             $table->timestamps();   
 
-            $table->foreign('place_id')
+            $table->foreign('post_id')
                 ->references('id')
-                ->on('places')
+                ->on('posts')
                 ->onDelete('cascade');
 
-            $table->foreign('user_id')
-                ->references('id')
-                ->on('users')
-                ->onDelete('cascade');
+            // $table->foreign('user_id')
+            //     ->references('id')
+            //     ->on('users')
+            //     ->onDelete('cascade');
         });
     }
 

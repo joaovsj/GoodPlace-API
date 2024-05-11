@@ -45,11 +45,11 @@ Route::group(['middleware' => ['auth:sanctum', 'cors']], function(){
     
     
 
-    Route::post('/posts/image', [PostController::class,  'upload']);
+
 });
 
-
-Route::post('/user/image',        [UserController::class,        'upload']);  // this route needs to be here
+Route::post('/posts/image',       [PostController::class,  'upload']);
+Route::post('/user/image',        [UserController::class,  'upload']);  // this route needs to be here
 
 // it can't use Sanctum authentication, because this route just returns some image
 Route::get('/user/image/{name}',  [UserController::class,        'getImage']);
