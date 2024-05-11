@@ -176,7 +176,8 @@ class UserController extends Controller
      * Store the profile image of user
      */
     public function upload(Request $request){
-        
+
+
         $id = $request->user_id; // id of the user
         $images = ImageUser::where('user_id', '=', $id)->get();
 
@@ -191,12 +192,11 @@ class UserController extends Controller
             $user->user_id = $id;
         }
 
-        
-
         if($request->hasFile('image') and $request->file('image')->isValid()){
 
             $requestImage = $request->image;
             $extension = $requestImage->extension();
+
             $extensions = ['jpg', 'png', 'jpeg'];
 
             if(!in_array($extension, $extensions)){
@@ -224,7 +224,7 @@ class UserController extends Controller
 
         return response()->json([
             'status' => false,
-            'message' => 'Formato da imagem é inválido!'
+            'message' => 'Imagem é inválida!'
         ], 422);
    
     }

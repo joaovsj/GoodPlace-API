@@ -37,27 +37,25 @@ Route::group(['middleware' => ['auth:sanctum', 'cors']], function(){
         'posts'      => PostController::class,
         'comments'   => CommentController::class
     ]);    
+
+    Route::get('/icons',            [UserController::class,        'icons']);
+    Route::get('/user/{id}',        [UserController::class,        'show']);   
+    Route::put('/user/{id}',        [UserController::class,        'update']);  
+        
+    
+    
+
+    Route::post('/posts/image', [PostController::class,  'upload']);
 });
 
 
-// Route::get('/', function(){
-//     return response()->json(['status'=> true]);
-// });
+Route::post('/user/image',        [UserController::class,        'upload']);  // this route needs to be here
+
+// it can't use Sanctum authentication, because this route just returns some image
+Route::get('/user/image/{name}',  [UserController::class,        'getImage']);
 
 Route::post('/register', [UserController::class,  'store'])    ->middleware('cors');
 Route::post('/login',    [AuthController::class, 'login'])    ->middleware('cors');
-
-
-Route::get('/user/{id}', [UserController::class,  'show'])     ->middleware('cors');
-Route::put('/user/{id}', [UserController::class,  'update'])   ->middleware('cors');
-Route::get('/user/image/{id}', [UserController::class, 'getImage']);   
-Route::post('/user/image', [UserController::class, 'upload']);   
-
-
-
-Route::get('/icons',     [UserController::class,'icons'])     ->middleware('cors');
-
-
 
 Route::get('/', function () {
     return response()->json([

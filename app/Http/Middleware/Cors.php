@@ -15,29 +15,19 @@ class Cors
      */
     public function handle(Request $request, Closure $next): Response
     {
-
+        $headers = [
+            'Access-Control-Allow-Origin'      => '*',
+            'Access-Control-Allow-Methods'     => 'POST, GET, OPTIONS, PUT, DELETE',
+            'Access-Control-Allow-Headers'     => 'Content-Type, Authorization, X-Requested-With, User-Token, Accept'
+        ];
 
         $response = $next($request);
-        $response->header('Access-Control-Allow-Origin', '*');
-        $response->header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, User-Token, Accept');
 
-        return $response;   
-        // $headers = [
-        //     'Access-Control-Allow-Origin'      => '*',
-        //     'Access-Control-Allow-Methods'     => 'POST, GET, OPTIONS, PUT, DELETE',
-        //     'Access-Control-Allow-Credentials' => 'true',
-        //     'Access-Control-Max-Age'           => '86400',
-        //     'Access-Control-Allow-Headers'     => 'Content-Type, Authorization, X-Requested-With, User-Token, Accept'
-        // ];
-
-        // $response = $next($request);
-        // foreach($headers as $key => $value)
-        // {
-        //     $response->header($key, $value);
-        // }
-
-        // return "something went wrong";
-        // return $response;
+        foreach($headers as $key => $value) {
+            $response->headers->set($key, $value);
+        }
+ 
+        return $response;
     }
 }
  

@@ -15,11 +15,17 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->unsignedBigInteger('place_id');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();   
 
             $table->foreign('place_id')
                 ->references('id')
                 ->on('places')
+                ->onDelete('cascade');
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
                 ->onDelete('cascade');
         });
     }

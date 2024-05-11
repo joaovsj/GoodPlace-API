@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use \App\Models\Post;
+use \App\Models\ImagePost;
 
 class PostController extends Controller
 {
@@ -30,7 +31,7 @@ class PostController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
+    {   
         if(Post::create($request->all())){
             
             return response()->json([
@@ -118,5 +119,57 @@ class PostController extends Controller
             'status' => false,
             'message' => 'Postagem não encontrada!'
         ], 404);
+    }
+
+    /**
+     * Store the profile image of user
+     */
+    public function upload(Request $request){
+
+        if(count($request->all()) == 0){
+            return response()->json([
+                'status' => false,
+                'message' => 'Campo imagem vazio!'
+            ], 422);
+        }
+
+        $imagePost = new ImagePost();
+        $imagePost->place_id = $request->place_id;
+        $imagePost->user_id = $request->user_id;
+
+        if($request->hasFile('image') and $request->file('image')->isValid()){
+
+            $requestImage = $request->image;
+            $extension = $requestImage->extension();
+            $extensions = ['jpg', 'png', 'jpeg'];
+
+            if(!in_array($extension, $extensions)){
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Formato da imagem é inválido!'
+                ], 422);
+            }
+
+            // making a new name...
+            $imageName = md5($requestImage->getClientOriginalName().strtotime("now")).".".$extension;
+            // moving to folder
+            $requestImage->move(public_path('img/places'), $imageName);
+            
+            // setting to request index the new name.            
+            $imagePost->name = $imageName;            
+            $imagePost->save();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Imagem atualizada com sucesso!'
+            ], 201);
+        }   
+
+
+        return response()->json([
+            'status' => false,
+            'message' => 'Formato da imagem é inválido!'
+        ], 422);
+   
     }
 }
