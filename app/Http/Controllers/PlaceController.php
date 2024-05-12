@@ -31,9 +31,6 @@ class PlaceController extends Controller
      */
     public function store(Request $request)
     {
-
-        // return response()->json([$request->all()]);
-
         $place = Place::create($request->all());
 
         if($place){
@@ -99,8 +96,6 @@ class PlaceController extends Controller
                 'status' => true,
                 'message' => 'Lugar atualizado com sucesso!'
             ], 200);
-            
-            
         }
 
         return response()->json([

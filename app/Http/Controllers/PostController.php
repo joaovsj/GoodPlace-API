@@ -32,11 +32,15 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {   
-        if(Post::create($request->all())){
+
+        $post = Post::create($request->all());
+
+        if($post){
             
             return response()->json([
                 'status' => true,
-                'message' => 'Postagem cadastrada como Sucesso!'
+                'message' => 'Postagem cadastrada como Sucesso!',
+                'id'       => $post->id
             ]);
         }
 
