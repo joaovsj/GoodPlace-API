@@ -43,9 +43,11 @@ Route::group(['middleware' => ['auth:sanctum', 'cors']], function(){
     Route::put('/user/{id}',        [UserController::class,        'update']);  
         
     
-    
-
-
+    Route::get('/logged', function () {
+        return response()->json([
+            'status' => true
+        ],200);
+    });
 });
 
 Route::post('/posts/image',       [PostController::class,  'upload']);
@@ -57,8 +59,4 @@ Route::get('/user/image/{name}',  [UserController::class,        'getImage']);
 Route::post('/register', [UserController::class,  'store'])    ->middleware('cors');
 Route::post('/login',    [AuthController::class, 'login'])    ->middleware('cors');
 
-Route::get('/', function () {
-    return response()->json([
-        'message' => 'Welcome!'
-    ],200);
-})->middleware('cors');
+
