@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use \App\Models\Place;
 
+use Illuminate\Support\Facades\DB;
+
 class PlaceController extends Controller
 {
    /**
@@ -31,13 +33,24 @@ class PlaceController extends Controller
      */
     public function store(Request $request)
     {
+
+        $result = $this->alreadyRegistered($request);
+        
+        if($result){
+            return response()->json([
+                'status' => false,
+                'message' => 'Postagem ou Endereço já cadastrado!',
+            ]);
+        }
+
+
         $place = Place::create($request->all());
 
         if($place){
             
             return response()->json([
                 'status' => true,
-                'message' => 'Lugar cadastrado como Sucesso!',
+                'message' => 'Lugar cadastrado com Sucesso!',
                 'id'    => $place->id
             ]);
         }
@@ -48,6 +61,20 @@ class PlaceController extends Controller
         ]);
         
     }
+
+    /**
+     *  Check if place is already registered
+     */
+    private function alreadyRegistered(Request $request){
+
+        $alreadyRegistered = DB::table('places')
+                                ->where('cep', '=', $request->cep)
+                                ->where('number', '=', $request->number)
+                                ->get();
+
+        return count($alreadyRegistered) > 0 ? true : false ;
+    }
+
 
     /**
      * Display the specified resource.
