@@ -13,9 +13,22 @@ class PostController extends Controller
      */
     public function index()
     {
+
+        $id = request('user_id');
+
+        if($id){
+
+            $posts = Post::where([
+                ['user_id', 'like', $id]
+            ])->get();
+
+        }else{
+            $posts = Post::orderByDesc('created_at')->get();
+        }
+
         return response()->json([
             'status' => true,
-            'body'   => Post::orderByDesc('created_at')->get()
+            'body'   => $posts
         ]);
     }
 
