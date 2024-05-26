@@ -20,18 +20,11 @@ class PostController extends Controller
 
         if($id){
 
-
             $posts = DB::table('posts')
                 ->where('user_id', $id)
                 ->join('places','posts.place_id','=', 'places.id')
+                ->join('images_posts', 'posts.id', '=', 'images_posts.post_id')
                 ->get();
-
-
-            // $posts = Post::where([
-            //     ['user_id', 'like', $id]
-            // ])->get();
-
-
 
         }else{
             $posts = Post::orderByDesc('created_at')->get();
