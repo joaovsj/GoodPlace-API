@@ -192,4 +192,37 @@ class PostController extends Controller
         ], 422);
    
     }
+
+    /**
+     * Method resposible to return post's image
+     * 
+     */
+    public function getImage(string $name){
+
+        $image = ImagePost::where('name', '=', $name)->get();
+
+        // dd($image);
+        
+        if($image->count() > 0){
+            
+            // $nameImage = $userData->image->name;    
+
+            $name = $image[0]->name;
+            $path = public_path("img/places/$name");
+
+            if(file_exists($path)){
+                
+                return response()->file($path);
+            }
+
+            return response()->json("It doesn't exists");
+
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => 'Imagem não encontrada!'
+        ], 404);
+        
+    }
 }

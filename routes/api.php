@@ -55,6 +55,7 @@ Route::post('/user/image',        [UserController::class,  'upload']);  // this 
 
 // it can't use Sanctum authentication, because this route just returns some image
 Route::get('/user/image/{name}',  [UserController::class,        'getImage']);
+Route::get('/post/image/{name}',  [PostController::class,        'getImage']);
 
 Route::post('/register', [UserController::class,  'store'])    ->middleware('cors');
 Route::post('/login',    [AuthController::class, 'login'])    ->middleware('cors');
