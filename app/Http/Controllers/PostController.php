@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use \App\Models\Post;
 use \App\Models\ImagePost;
 
+use Illuminate\Support\Facades\DB;
+
 class PostController extends Controller
 {
    /**
@@ -18,9 +20,18 @@ class PostController extends Controller
 
         if($id){
 
-            $posts = Post::where([
-                ['user_id', 'like', $id]
-            ])->get();
+
+            $posts = DB::table('posts')
+                ->where('user_id', $id)
+                ->join('places','posts.place_id','=', 'places.id')
+                ->get();
+
+
+            // $posts = Post::where([
+            //     ['user_id', 'like', $id]
+            // ])->get();
+
+
 
         }else{
             $posts = Post::orderByDesc('created_at')->get();
