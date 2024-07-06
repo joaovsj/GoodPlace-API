@@ -19,33 +19,20 @@ class PostController extends Controller
         $id = request('user_id');
 
         if($id){
-
-            // $sub = DB::table('comments')   
-            //     ->select('post_id', DB::raw('COUNT(*)'));
-
             $posts = DB::table('posts')
                 ->where('user_id', $id)
                 ->join('places','posts.place_id','=', 'places.id')
                 ->join('users', 'posts.user_id', '=', 'users.id')
                 ->join('images_posts', 'posts.id', '=', 'images_posts.post_id')
                 ->select('posts.*', 'places.*', 'images_posts.name as image', 'users.name as username', )
-                // ->selectRaw(DB::raw('COUNT(*)'))
                 ->get();
 
 
             foreach ($posts as $key => $value) {
-        
-                // Fazer uma Subconsulta contando os valores em comments e adicionando no response.
-                // var_dump($key);
-                // var_dump($value->id);
-
-            }
-
-
-
-
-
-                // SELECT COUNT(*) FROM comments WHERE post_id = 1;
+                $quantityRegisters = DB::table('comments')->where('post_id', '=', $value->id)->count();
+                $posts[$key]->comments = $quantityRegisters;
+            }   
+            
         }else{
             $posts = Post::orderByDesc('created_at')->get();
         }
