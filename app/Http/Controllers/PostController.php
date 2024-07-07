@@ -78,16 +78,27 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $post)
-    {
-        $postData = Post::find($post);
+    public function show(string $id)
+    {        
+        if(isset($id)){
 
-        
-        if(isset($postData)){
+            $post = DB::table('posts')
+                ->join('places','posts.place_id','=', 'places.id')
+                ->join('users', 'posts.user_id', '=', 'users.id')
+                ->join('images_posts', 'posts.id', '=', 'images_posts.post_id')
+                ->select('posts.*', 'places.*', 'images_posts.name as image', 'users.name as username')
+                ->where('posts.id', $id)
+                ->get();
+
+
+            foreach ($post as $key => $value) {
+                $quantityRegisters = DB::table('comments')->where('post_id', '=', $value->id)->count();
+                $post[$key]->comments = $quantityRegisters;
+            }   
 
             return response()->json([
                 'status' => true,
-                'body' => $postData, 
+                'body' => $post, 
             ], 200); 
         }
 
