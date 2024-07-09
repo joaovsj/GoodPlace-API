@@ -15,13 +15,24 @@ class CommentController extends Controller
     public function index()
     {
 
+        $id = request('post_id');
 
+        if($id){
+            $comments = DB::table('comments')
+                ->where('post_id', $id)
+                ->join('users','comments.user_id','=', 'users.id')
+                ->join('images_users', 'comments.user_id', '=', 'images_users.user_id')
+                ->select('comments.*', 'users.name', 'images_users.name as image')
+                ->get();
+        }else{
+            $comments = DB::table('comments')
+                ->join('users','comments.user_id','=', 'users.id')
+                ->join('images_users', 'comments.user_id', '=', 'images_users.user_id')
+                ->select('comments.*', 'users.name', 'images_users.name as image')
+                ->get();
+        }
 
-        $comments = DB::table('comments')
-            ->join('users','comments.user_id','=', 'users.id')
-            ->join('images_users', 'comments.user_id', '=', 'images_users.user_id')
-            ->select('comments.*', 'users.name', 'images_users.name as image')
-            ->get();
+        
 
 
         return response()->json([
