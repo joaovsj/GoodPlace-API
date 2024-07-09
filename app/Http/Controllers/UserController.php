@@ -58,11 +58,9 @@ class UserController extends Controller
     public function show(string $id)
     {
         $userData = User::find($id);
-
-        
+                
         if(isset($userData)){
 
-            
             $imageName = $userData->image; 
 
             $userData['image']         = $imageName;

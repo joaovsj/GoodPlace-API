@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use \App\Models\Comment;
 
+use Illuminate\Support\Facades\DB;
+
 class CommentController extends Controller
 {
    /**
@@ -12,9 +14,19 @@ class CommentController extends Controller
      */
     public function index()
     {
+
+
+
+        $comments = DB::table('comments')
+            ->join('users','comments.user_id','=', 'users.id')
+            ->join('images_users', 'comments.user_id', '=', 'images_users.user_id')
+            ->select('comments.*', 'users.name', 'images_users.name as image')
+            ->get();
+
+
         return response()->json([
             'status' => true,
-            'body'   => Comment::orderByDesc('created_at')->get()
+            'body'   => $comments
         ]);
     }
 
