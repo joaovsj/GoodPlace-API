@@ -14,9 +14,23 @@ class PlaceController extends Controller
      */
     public function index()
     {
+
+        $search = request('search');
+
+
+        if($search){
+            $response = Place::where([
+                ['name', 'like', '%'.$search.'%']
+            ])->get();
+
+        } else{
+            $response = Place::orderByDesc('created_at')->get();
+        }
+
+
         return response()->json([
             'status' => true,
-            'body'   => Place::orderByDesc('created_at')->get()
+            'body'   => $response
         ]);
     }
 
