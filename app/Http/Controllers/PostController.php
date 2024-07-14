@@ -101,34 +101,35 @@ class PostController extends Controller
      */
     public function show(string $id)
     {        
-        if(isset($id)){
 
-            $post = DB::table('posts')
-                ->join('places','posts.place_id','=', 'places.id')
-                ->join('categories', 'places.category_id', '=', 'categories.id')
-                ->join('users', 'posts.user_id', '=', 'users.id')
-                ->join('images_posts', 'posts.id', '=', 'images_posts.post_id')
-                ->select('posts.*', 'places.*', 'images_posts.name as image', 'users.name as username', 'categories.name as category')
-                ->where('posts.id', $id)
-                ->get();
+        $exists = Post::find($id);
 
-
-            foreach ($post as $key => $value) {
-                $quantityRegisters = DB::table('comments')->where('post_id', '=', $value->id)->count();
-                $post[$key]->comments = $quantityRegisters;
-            }   
-
+        if(!$exists){
             return response()->json([
-                'status' => true,
-                'body' => $post, 
-            ], 200); 
-        }
+                'status' => false,
+                'message' => 'Postagem não encontrada!'
+            ], 404);    
+        }        
+
+        $post = DB::table('posts')
+            ->join('places','posts.place_id','=', 'places.id')
+            ->join('categories', 'places.category_id', '=', 'categories.id')
+            ->join('users', 'posts.user_id', '=', 'users.id')
+            ->join('images_posts', 'posts.id', '=', 'images_posts.post_id')
+            ->select('posts.*', 'places.*', 'images_posts.name as image', 'users.name as username', 'categories.name as category')
+            ->where('posts.id', $id)
+            ->get();
+
+
+        foreach ($post as $key => $value) {
+            $quantityRegisters = DB::table('comments')->where('post_id', '=', $value->id)->count();
+            $post[$key]->comments = $quantityRegisters;
+        }   
 
         return response()->json([
-            'status' => false,
-            'message' => 'Postagem não encontrada!'
-        ], 404);
-
+            'status' => true,
+            'body' => $post, 
+        ], 200); 
     }
 
     /**
