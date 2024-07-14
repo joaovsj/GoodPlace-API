@@ -15,7 +15,7 @@ class CategoryController extends Controller
     {
         return response()->json([
             'status' => true,
-            'body'   => Category::orderByDesc('created_at')->get()
+            'body'   => Category::orderBy('name', 'asc')->get()
         ]);
     }
 

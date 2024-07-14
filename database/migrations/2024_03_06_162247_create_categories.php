@@ -27,8 +27,43 @@ return new class extends Migration
         DB::table('categories')->insert(['name' => 'Farmácia']);
         DB::table('categories')->insert(['name' => 'Padaria']);
         DB::table('categories')->insert(['name' => 'Hospital']);   
-        DB::table('categories')->insert(['name' => 'Posto de Saúde']);   
-
+        DB::table('categories')->insert(['name' => 'Pousada']); 
+        DB::table('categories')->insert(['name' => 'Quiosque']);
+        DB::table('categories')->insert(['name' => 'Ponto Turístico']); 
+        DB::table('categories')->insert(['name' => 'Praia']); 
+        DB::table('categories')->insert(['name' => 'Centro']);    
+        DB::table('categories')->insert(['name' => 'Praça']); 
+        DB::table('categories')->insert(['name' => 'Museu']); 
+        DB::table('categories')->insert(['name' => 'Parque']); 
+        DB::table('categories')->insert(['name' => 'Motel']); 
+        DB::table('categories')->insert(['name' => 'Circo']); 
+        DB::table('categories')->insert(['name' => 'Aeroporto']); 
+        DB::table('categories')->insert(['name' => 'Quitanda']); 
+        DB::table('categories')->insert(['name' => 'Universidade']); 
+        DB::table('categories')->insert(['name' => 'Faculdade']);
+        DB::table('categories')->insert(['name' => 'Escola']);
+        DB::table('categories')->insert(['name' => 'Empresa']); 
+        DB::table('categories')->insert(['name' => 'Evento']);
+        DB::table('categories')->insert(['name' => 'Sorveteria']); 
+        DB::table('categories')->insert(['name' => 'Bar']); 
+        DB::table('categories')->insert(['name' => 'Lanchonete']);
+        DB::table('categories')->insert(['name' => 'Açougue']);
+        DB::table('categories')->insert(['name' => 'Peixaria']);
+        DB::table('categories')->insert(['name' => 'Papelaria']);
+        DB::table('categories')->insert(['name' => 'Pet shop']);
+        DB::table('categories')->insert(['name' => 'Academia']);
+        DB::table('categories')->insert(['name' => 'Barbearia']);
+        DB::table('categories')->insert(['name' => 'Clínica']);
+        DB::table('categories')->insert(['name' => 'Estúdio']); 
+        DB::table('categories')->insert(['name' => 'Agência']); 
+        DB::table('categories')->insert(['name' => 'Joalheria']); 
+        DB::table('categories')->insert(['name' => 'Oficina']); 
+        DB::table('categories')->insert(['name' => 'Biblioteca']); 
+        DB::table('categories')->insert(['name' => 'Teatro']); 
+        DB::table('categories')->insert(['name' => 'Zoológico']); 
+        DB::table('categories')->insert(['name' => 'Campo']); 
+        DB::table('categories')->insert(['name' => 'Clube']); 
+        DB::table('categories')->insert(['name' => 'Cassino']); 
     }
 
     /**
