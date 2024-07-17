@@ -163,4 +163,8 @@ class PlaceController extends Controller
             'message' => 'Lugar não encontrado!'
         ], 404);
     }
+
+
+    
+
 }

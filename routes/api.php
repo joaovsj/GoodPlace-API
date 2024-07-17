@@ -57,7 +57,9 @@ Route::post('/user/image',        [UserController::class,  'upload']);  // this 
 Route::get('/user/image/{name}',  [UserController::class,        'getImage']);
 Route::get('/post/image/{name}',  [PostController::class,        'getImage']);
 
-Route::post('/register', [UserController::class,  'store'])    ->middleware('cors');
+Route::post('/register', [UserController::class,  'store'])   ->middleware('cors');
 Route::post('/login',    [AuthController::class, 'login'])    ->middleware('cors');
 
+
+Route::get('/places/comments/{name}', [PostController::class, 'getAllCommentsByName']) ->middleware('cors');
 

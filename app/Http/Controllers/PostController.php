@@ -266,4 +266,28 @@ class PostController extends Controller
         ], 404);
         
     }
+
+
+    public function getAllCommentsByName($name){
+
+        $posts = DB::table('posts')
+            ->join('users', 'posts.user_id', '=', 'users.id')
+            ->join('places', 'posts.place_id', '=', 'places.id')
+            ->join('images_posts', 'posts.id', '=', 'images_posts.post_id')
+            ->select('posts.*', 'images_posts.name as image', 'users.name as username', 'places.name as place')
+            ->where('places.name','like', "%$name%")
+            ->get();
+
+        if(count($posts) > 0){    
+            return response()->json([
+                'status' => true,
+                'message' => $posts
+            ], 200);
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => "Local não encontrado!"
+        ], 404);
+    }
 }
