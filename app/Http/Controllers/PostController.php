@@ -169,6 +169,25 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
+        if(!$id){
+            return response()->json([
+                'status' => false,
+                'message' => 'Sem id!'
+            ], 404);
+        }
+
+
+        $image = ImagePost::where('post_id', '=', $id)->get();
+
+        if(sizeof($image) > 0){
+
+            $path = public_path('img/places/') . $image[0]->name;  
+            \file_exists($path) ? unlink($path) : null;  
+        }
+
+        $deleted = DB::table('comments')->where('post_id', '=', $id)->delete();
+        $deleted = DB::table('images_posts')->where('post_id', '=', $id)->delete();
+        
         if(Post::destroy($id)){
             
             return response()->json([
