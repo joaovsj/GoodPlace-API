@@ -20,33 +20,31 @@ class PostController extends Controller
 
         if($id){
             $posts = DB::table('posts')
-            ->where('posts.user_id', $id) 
-            ->join('places', 'posts.place_id', '=', 'places.id')
-            ->join('users', 'posts.user_id', '=', 'users.id')
-            ->join('images_posts', 'posts.id', '=', 'images_posts.post_id')
-            ->select(
-                'posts.id',
-                'posts.assessment',
-                'posts.description',
-                'posts.details',
-                'posts.user_id',
-                'posts.place_id',
-                'posts.created_at',
-                'posts.updated_at',
-                'places.name as name',
-                'places.cep',
-                'places.address',
-                'places.number',
-                'places.neighborhood',
-                'places.city',
-                'places.state',
-                'places.country',
-                'places.category_id',
-                'images_posts.name as image',
-                'users.name as username'
-            )
-            ->get();
-        
+                ->where('posts.user_id', $id) 
+                ->join('places', 'posts.place_id', '=', 'places.id')
+                ->join('users', 'posts.user_id', '=', 'users.id')
+                ->join('images_posts', 'posts.id', '=', 'images_posts.post_id')
+                ->select(
+                    'posts.id',
+                    'posts.assessment',
+                    'posts.description',
+                    'posts.details',
+                    'posts.user_id',
+                    'posts.place_id',
+                    'posts.created_at',
+                    'posts.updated_at',
+                    'places.name as name',
+                    'places.cep',
+                    'places.address',
+                    'places.number',
+                    'places.neighborhood',
+                    'places.city',
+                    'places.state',
+                    'places.country',
+                    'places.category_id',
+                    'images_posts.name as image',
+                    'users.name as username'
+                )->get();
 
 
             foreach ($posts as $key => $value) {
@@ -192,7 +190,7 @@ class PostController extends Controller
             
             return response()->json([
                 'status' => true,
-                'messsage' => 'Postagem deletada com sucesso!'
+                'message' => 'Postagem deletada com sucesso!'
             ], 201);
         }
 
@@ -298,6 +296,12 @@ class PostController extends Controller
             ->get();
 
         if(count($posts) > 0){    
+
+            foreach ($posts as $key => $value) {
+                $quantityRegisters = DB::table('comments')->where('post_id', '=', $value->id)->count();
+                $posts[$key]->comments = $quantityRegisters;
+            }   
+            
             return response()->json([
                 'status' => true,
                 'message' => $posts
