@@ -304,7 +304,7 @@ class PostController extends Controller
             
             return response()->json([
                 'status' => true,
-                'message' => $posts
+                'body' => $posts
             ], 200);
         }
 
