@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use \App\Models\Post;
+use \App\Models\User;
 use \App\Models\ImagePost;
 
 use Illuminate\Support\Facades\DB;
@@ -284,7 +285,7 @@ class PostController extends Controller
         
     }
 
-
+    // method responsible to return all posts by name sent by user
     public function getAllCommentsByName($name){
 
         $posts = DB::table('posts')
@@ -313,4 +314,38 @@ class PostController extends Controller
             'message' => "Local não encontrado!"
         ], 404);
     }
+
+    public function getPeopleByName($name){
+        
+        // Subquery to count posts
+        $postsSubquery = DB::table('posts')
+            ->selectRaw('count(*)')
+            ->whereColumn('posts.user_id', 'users.id');
+
+        // Subquery to count comments
+        $commentsSubquery = DB::table('comments')
+            ->selectRaw('count(*)')
+            ->whereColumn('comments.user_id', 'users.id');
+
+        // Execution of queries
+        $users = User::select(['users.*'])
+            ->selectSub($postsSubquery, 'posts_count')
+            ->selectSub($commentsSubquery, 'comments_count')
+            ->where('name', 'like', "%$name%")
+            ->get();
+        
+        if(count($users) > 0){    
+            
+            return response()->json([
+                'status' => true,
+                'body' => $users
+            ], 200);
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => "Nenhum usuário encontrado!"
+        ], 404);
+    }
+
 }

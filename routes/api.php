@@ -61,5 +61,6 @@ Route::post('/register', [UserController::class,  'store'])   ->middleware('cors
 Route::post('/login',    [AuthController::class, 'login'])    ->middleware('cors');
 
 
-Route::get('/places/comments/{name}', [PostController::class, 'getAllCommentsByName']) ->middleware('cors');
+Route::get('/places/comments/{name}', [PostController::class, 'getAllCommentsByName'])  ->middleware('cors');
+Route::get('/posts/people/{name}', [PostController::class, 'getPeopleByName'])          ->middleware('cors');
 
