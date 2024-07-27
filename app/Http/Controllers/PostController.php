@@ -315,23 +315,21 @@ class PostController extends Controller
         ], 404);
     }
 
+    // method responsible to get all users by field name sent by user
     public function getPeopleByName($name){
         
-        // Subquery to count posts
-        $postsSubquery = DB::table('posts')
-            ->selectRaw('count(*)')
-            ->whereColumn('posts.user_id', 'users.id');
-
-        // Subquery to count comments
-        $commentsSubquery = DB::table('comments')
-            ->selectRaw('count(*)')
-            ->whereColumn('comments.user_id', 'users.id');
-
-        // Execution of queries
-        $users = User::select(['users.*'])
-            ->selectSub($postsSubquery, 'posts_count')
-            ->selectSub($commentsSubquery, 'comments_count')
-            ->where('name', 'like', "%$name%")
+        $users = DB::table('users')
+            ->leftJoin('posts', 'users.id', '=', 'posts.user_id')
+            ->leftJoin('comments', 'users.id', '=', 'comments.user_id')
+            ->leftJoin('places', 'posts.place_id', '=', 'places.id')
+            ->select(
+                'users.*',
+                DB::raw('COUNT(DISTINCT posts.id) as posts_done'),
+                DB::raw('COUNT(DISTINCT comments.id) as comments_done'),
+                DB::raw('COUNT(DISTINCT places.id) as places_visited')
+            )
+            ->where('users.name', 'like', "%$name%")
+            ->groupBy('users.id')
             ->get();
         
         if(count($users) > 0){    
