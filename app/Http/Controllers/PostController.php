@@ -119,9 +119,11 @@ class PostController extends Controller
             ->where('posts.id', $id)
             ->get();
 
+        
+        // dd($id); // depois descobrir qual é a razão pela qual o id está trocando dentro da função
 
         foreach ($post as $key => $value) {
-            $quantityRegisters = DB::table('comments')->where('post_id', '=', $value->id)->count();
+            $quantityRegisters = DB::table('comments')->where('post_id', '=', $id)->count();
             $post[$key]->comments = $quantityRegisters;
         }   
 
@@ -288,13 +290,27 @@ class PostController extends Controller
     // method responsible to return all posts by name sent by user
     public function getAllCommentsByName($name){
 
-        $posts = DB::table('posts')
-            ->join('users', 'posts.user_id', '=', 'users.id')
-            ->join('places', 'posts.place_id', '=', 'places.id')
-            ->join('images_posts', 'posts.id', '=', 'images_posts.post_id')
-            ->select('posts.*', 'images_posts.name as image', 'users.name as username', 'places.name as place')
-            ->where('places.name','like', "%$name%")
-            ->get();
+
+        if($name == "all"){
+
+            $posts = DB::table('posts')
+                ->join('users', 'posts.user_id', '=', 'users.id')
+                ->join('places', 'posts.place_id', '=', 'places.id')
+                ->join('images_posts', 'posts.id', '=', 'images_posts.post_id')
+                ->select('posts.*', 'images_posts.name as image', 'users.name as username', 'places.name as place')
+                ->get();
+
+        }else{
+
+            $posts = DB::table('posts')
+                ->join('users', 'posts.user_id', '=', 'users.id')
+                ->join('places', 'posts.place_id', '=', 'places.id')
+                ->join('images_posts', 'posts.id', '=', 'images_posts.post_id')
+                ->select('posts.*', 'images_posts.name as image', 'users.name as username', 'places.name as place')
+                ->where('places.name','like', "%$name%")
+                ->get();
+
+        }
 
         if(count($posts) > 0){    
 

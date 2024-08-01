@@ -44,8 +44,9 @@ Route::group(['middleware' => ['auth:sanctum', 'cors']], function(){
     // Route::get('/posts', [PostController::class, 'index']);
     // Route::get('/posts', [PostController::class, 'index']);
     
-    Route::get('posts/{post}',  [PostController::class, 'show'])->withoutMiddleware(['auth:sanctum']);
-    Route::get('comments/',     [CommentController::class, 'index'])->withoutMiddleware(['auth:sanctum']);
+    Route::get('posts/{post}',  [PostController::class, 'show'])        ->withoutMiddleware(['auth:sanctum']);
+    Route::get('posts/',        [PostController::class, 'index'])          ->withoutMiddleware(['auth:sanctum']);
+    Route::get('comments/',     [CommentController::class, 'index'])    ->withoutMiddleware(['auth:sanctum']);
     
 
 
@@ -72,6 +73,6 @@ Route::post('/register', [UserController::class,  'store'])   ->middleware('cors
 Route::post('/login',    [AuthController::class, 'login'])    ->middleware('cors');
 
 
-Route::get('/places/comments/{name}', [PostController::class, 'getAllCommentsByName'])  ->middleware('cors');
-Route::get('/posts/people/{name}', [PostController::class, 'getPeopleByName'])          ->middleware('cors');
+Route::get('/places/comments/{name?}', [PostController::class, 'getAllCommentsByName'])  ->middleware('cors');
+Route::get('/posts/people/{name}',     [PostController::class, 'getPeopleByName'])          ->middleware('cors');
 
