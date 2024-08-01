@@ -18,7 +18,8 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('phone', 14)->nullable();
-            $table->json('social_media')->nullable();            
+            $table->json('social_media')->nullable();         
+            $table->string('public_token');   
             $table->rememberToken();
             $table->timestamps();
         });

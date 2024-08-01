@@ -43,6 +43,7 @@ class UserController extends Controller
             'password' => $fields['password'],
             'phone' => $fields['phone'],
             'social_media' => $fields['social_media'],
+            'public_token' => sha1($fields['name']) 
         ]);
 
         return response()->json([
@@ -225,5 +226,30 @@ class UserController extends Controller
             'message' => 'Imagem é inválida!'
         ], 422);
    
+    }
+
+    public function getUserByToken(string $token)
+    {
+        $userData = User::where('public_token', $token)->get();
+        $userData = User::find($userData[0]->id); // avoid the problem userData be not an instance of users
+                
+        if(isset($userData)){
+
+            $imageName = $userData->image; 
+
+            $userData['image']         = $imageName;
+            $userData['placesVisited'] = $this->countAllRegistersInTable('posts', $userData->id); 
+            $userData['comments']      = $this->countAllRegistersInTable('comments', $userData->id); 
+
+            return response()->json([
+                'status' => true,
+                'body' => $userData,
+            ], 200); 
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => 'Usuário não encontrado!'
+        ], 404);
     }
 }
