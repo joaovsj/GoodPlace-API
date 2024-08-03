@@ -23,12 +23,14 @@ class CommentController extends Controller
                 ->join('users','comments.user_id','=', 'users.id')
                 ->join('images_users', 'comments.user_id', '=', 'images_users.user_id')
                 ->select('comments.*', 'users.name', 'images_users.name as image')
+                ->orderByRaw('created_at DESC')
                 ->get();
         }else{
             $comments = DB::table('comments')
                 ->join('users','comments.user_id','=', 'users.id')
                 ->join('images_users', 'comments.user_id', '=', 'images_users.user_id')
                 ->select('comments.*', 'users.name', 'images_users.name as image')
+                ->orderByRaw('created_at DESC')
                 ->get();
         }
 

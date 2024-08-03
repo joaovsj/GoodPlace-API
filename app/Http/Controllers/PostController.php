@@ -84,7 +84,7 @@ class PostController extends Controller
             
             return response()->json([
                 'status' => true,
-                'message' => 'Postagem cadastrada como Sucesso!',
+                'message' => 'Postagem cadastrada com Sucesso!',
                 'id'       => $post->id
             ]);
         }

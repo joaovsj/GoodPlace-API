@@ -231,6 +231,16 @@ class UserController extends Controller
     public function getUserByToken(string $token)
     {
         $userData = User::where('public_token', $token)->get();
+
+
+        if(count($userData) == 0){
+            return response()->json([
+                'status' => false,
+                'message' => 'Usuário não encontrado!'
+            ], 404);
+        }
+            
+
         $userData = User::find($userData[0]->id); // avoid the problem userData be not an instance of users
                 
         if(isset($userData)){
