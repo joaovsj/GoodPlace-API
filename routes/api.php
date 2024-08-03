@@ -47,7 +47,7 @@ Route::group(['middleware' => ['auth:sanctum', 'cors']], function(){
     Route::get('posts/{post}',  [PostController::class, 'show'])        ->withoutMiddleware(['auth:sanctum']);
     Route::get('posts/',        [PostController::class, 'index'])       ->withoutMiddleware(['auth:sanctum']);
     Route::get('comments/',     [CommentController::class, 'index'])    ->withoutMiddleware(['auth:sanctum']);
-    Route::get('categories/',   [CommentController::class, 'index'])    ->withoutMiddleware(['auth:sanctum']);
+    Route::get('categories/',   [CategoryController::class, 'index'])    ->withoutMiddleware(['auth:sanctum']);
     
     Route::get('/user/token/{token}', [UserController::class, 'getUserByToken'])->withoutMiddleware(['auth:sanctum']);;
 
