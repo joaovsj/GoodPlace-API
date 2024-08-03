@@ -44,7 +44,8 @@ class PostController extends Controller
                     'places.country',
                     'places.category_id',
                     'images_posts.name as image',
-                    'users.name as username'
+                    'users.name as username',
+                    'users.public_token'
                 )->get();
 
 
@@ -115,7 +116,14 @@ class PostController extends Controller
             ->join('categories', 'places.category_id', '=', 'categories.id')
             ->join('users', 'posts.user_id', '=', 'users.id')
             ->join('images_posts', 'posts.id', '=', 'images_posts.post_id')
-            ->select('posts.*', 'places.*', 'images_posts.name as image', 'users.name as username', 'categories.name as category')
+            ->select(
+                'posts.*', 
+                'places.*', 
+                'images_posts.name as image', 
+                'users.name as username', 
+                'users.public_token',
+                'categories.name as category'
+            )
             ->where('posts.id', $id)
             ->get();
 
