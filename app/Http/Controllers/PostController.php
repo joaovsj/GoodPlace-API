@@ -342,21 +342,46 @@ class PostController extends Controller
     // method responsible to get all users by field name sent by user
     public function getPeopleByName($name){
         
-        $users = DB::table('users')
-            ->leftJoin('posts', 'users.id', '=', 'posts.user_id')
-            ->leftJoin('comments', 'users.id', '=', 'comments.user_id')
-            ->leftJoin('places', 'posts.place_id', '=', 'places.id')
-            ->leftJoin('images_users', 'users.id', '=', 'images_users.user_id')
-            ->select(
-                'users.*',
-                'images_users.name as image',
-                DB::raw('COUNT(DISTINCT posts.id) as posts_done'),
-                DB::raw('COUNT(DISTINCT comments.id) as comments_done'),
-                DB::raw('COUNT(DISTINCT places.id) as places_visited')
-            )
-            ->where('users.name', 'like', "%$name%")
-            ->groupBy('users.id', 'images_users.name')
-            ->get();
+        if($name == "all"){
+
+            $users = DB::table('users')
+                ->leftJoin('posts', 'users.id', '=', 'posts.user_id')
+                ->leftJoin('comments', 'users.id', '=', 'comments.user_id')
+                ->leftJoin('places', 'posts.place_id', '=', 'places.id')
+                ->leftJoin('images_users', 'users.id', '=', 'images_users.user_id')
+                ->select(
+                    'users.*',
+                    'images_users.name as image',
+                    DB::raw('COUNT(DISTINCT posts.id) as posts_done'),
+                    DB::raw('COUNT(DISTINCT comments.id) as comments_done'),
+                    DB::raw('COUNT(DISTINCT places.id) as places_visited')
+                )
+                ->groupBy('users.id', 'images_users.name')
+                ->orderByRaw('users.created_at DESC')
+                ->get();                    
+        
+        } else{
+
+            $users = DB::table('users')
+                ->leftJoin('posts', 'users.id', '=', 'posts.user_id')
+                ->leftJoin('comments', 'users.id', '=', 'comments.user_id')
+                ->leftJoin('places', 'posts.place_id', '=', 'places.id')
+                ->leftJoin('images_users', 'users.id', '=', 'images_users.user_id')
+                ->select(
+                    'users.*',
+                    'images_users.name as image',
+                    DB::raw('COUNT(DISTINCT posts.id) as posts_done'),
+                    DB::raw('COUNT(DISTINCT comments.id) as comments_done'),
+                    DB::raw('COUNT(DISTINCT places.id) as places_visited')
+                )
+                ->where('users.name', 'like', "%$name%")
+                ->groupBy('users.id', 'images_users.name')
+                ->get();
+
+        }
+
+
+
         
         if(count($users) > 0){    
             
